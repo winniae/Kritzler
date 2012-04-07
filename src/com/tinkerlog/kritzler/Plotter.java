@@ -143,7 +143,7 @@ public class Plotter extends PApplet {
   }
   
   public void setupPlotter(List<Instruction> instructions) {
-    plotter = new Kritzler(this, port);
+    plotter = new Kritzler(port);
     plotter.setInstructions(instructions);
     plotter.setScale(1.0F);
     plotter.translate(START_X + dx, START_Y + dy);

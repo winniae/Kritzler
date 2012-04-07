@@ -6,17 +6,25 @@ import java.util.List;
 import processing.core.PApplet;
 import processing.serial.Serial;
 
+/**
+ * This class talks to the Kritzler Arduino firmware.
+ * Instantiate an object with a given port to talk to an Kritzler.
+ * Use Instruction objects and
+ * a) set a list via setInstructions() and call checkSerial() repeatedly or
+ * b) call sendInstruction() directly.
+ */
 public class Kritzler {
     
   private Serial port;
   private List<Instruction> instructions;
   private int currentInst;
   private StringBuilder buf = new StringBuilder();
-  
+
+  // offset and scale factor
   private float tx, ty;
   private float scale;
   
-  public Kritzler(PApplet parent, Serial port) {
+  public Kritzler(Serial port) {
     this.port = port;
   }
   
@@ -38,17 +46,25 @@ public class Kritzler {
     if (port == null) return true;
     return instructions.size() == currentInst;
   }
-  
+
+  /**
+   * Tests serial connection.
+   * Receives messages from Arduino.
+   * Sends the next instruction in the list.
+   */
   public void checkSerial() {
     if (port != null && port.available() > 0) {
       processSerial();
     }
   }
-  
-  public void processSerial() {
+
+  /**
+   * Receive message from Arduino and process message
+   */
+  private void processSerial() {
     while (port.available() > 0) {
       int c = port.read();
-      if (c != 10) {
+      if (c != 10) { // TODO magic number? what is it?
         buf.append((char)c);        
       }
       else {
@@ -66,8 +82,13 @@ public class Kritzler {
       }
     }
   }
-  
-  public void processMessage(String message) {
+
+  /**
+   * Process message received from Arduino.
+   * Calls next instruction in the list.
+   * @param message
+   */
+  private void processMessage(String message) {
     if (message.equals("OK")) {
       System.out.println("received ok");
       if (instructions != null) {
@@ -85,7 +106,11 @@ public class Kritzler {
       System.out.println("unknown: " + message);
     }
   }
-  
+
+  /**
+   * Directly send an instruction to be performed
+   * @param i
+   */
   public void sendInstruction(Instruction i) {
     if (port == null) return;
     String msg = null;
