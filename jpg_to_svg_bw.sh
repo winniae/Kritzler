@@ -5,13 +5,13 @@
 
 
 format=500x500
-edge=2
+edge=3
 
 cv=/usr/local/bin/convert
 cv_std="$cv  -resize $format -threshold $2% -median 1"
 cv_edge="$cv -resize $format -median 2 -colorspace Gray -edge $edge -negate -threshold $3%" 
 
-pr=/Users/alex/bin/potrace
+pr=potrace
 prall="-s -t 15 -a 1.3"
 
 $cv_std -median 1 $1.jpg $1-s.jpg
