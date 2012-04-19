@@ -23,8 +23,8 @@
 #define PB5 5
 
 // distance between both motors (axis) 150 cm
-#define AXIS_DISTANCE_X 15000
-#define AXIS_DISTANCE_Y 15000
+#define AXIS_DISTANCE_X 7300
+#define AXIS_DISTANCE_Y 7300
 
 // starting position
 // a = b = 10607 --> 1060.7mm
@@ -32,8 +32,8 @@
 //#define START_STEPS_M1 13505
 //#define START_STEPS_M2 13505
 
-#define START_X 7500
-#define START_Y 7500
+#define START_X 3650
+#define START_Y 3650
 
 // pulley radius 10mm
 #define PULLEY_R 100
@@ -51,8 +51,8 @@
 // pen states
 #define PEN_UP 0
 #define PEN_DOWN 1
-#define PEN_UP_POS 90
-#define PEN_DOWN_POS 55
+#define PEN_UP_POS 0
+#define PEN_DOWN_POS 135
 #define PEN_DELAY 500
 
 // driver states 
@@ -353,6 +353,8 @@ void loop() {
       case 'h':
 	skipWhiteSpace();
 	currentCommand = CMD_HELLO;
+        penUp();
+        penDown();
 	penUp();
 	Serial.println("OK");
 	break;
